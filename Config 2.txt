@@ -1,0 +1,106 @@
+GENERAR LOS API CONTROLLER
+
+HACER CADA API: dotnet aspnet-codegenerator controller -name CampusesApiController -async -api -m Campus -dc SchoolContext -outDir ApiControllers
+
+CAMBIAR LA RUTA: ejm: [Route("api/Campuses")]
+
+USO DE SWAGGER:
+
+ISNTALAR: dotnet add package NSwag.AspNetCore
+
+EN EL Startup.cs AGREGAR services.AddSwaggerDocument();
+
+EN EL MISMO DOC AGREGAR LOS SERVICIOS
+
+app.UseOpenApi();
+app.UseSwaggerUi3();
+
+ENTRAR: http://localhost:5000/swagger
+
+AGREGAMOS AL SWAGGER:
+ services.AddSwaggerDocument(config =>
+            {
+                config.PostProcess = document =>
+                {
+                    document.Info.Version = "v1";
+                    document.Info.Title = "University API";
+                    document.Info.Description = "A simple ASP.NET Core web API";
+                    document.Info.TermsOfService = "None";
+                    document.Info.Contact = new NSwag.OpenApiContact
+                    {
+                        Name = "Juan Flores-Moroco",
+                        Email = "ajaflorez.upc@gmail.com",
+                        Url = "https://github.com/ajaflorez-coder/"
+                    };
+                    document.Info.License = new NSwag.OpenApiLicense
+                    {
+                        Name = "Apache 2.0",
+                        Url = "https://www.apache.org/licenses/LICENSE-2.0"
+                    };
+                };
+            });
+
+EN EL CPROJS
+<GenerateDocumentationFile>true</ GenerateDocumentationFile> 
+
+
+GUIA VUE Y AXIOS
+
+EN EL STARTUP.CS
+
+readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+public void ConfigureServices(IServiceCollection services)        {
+
+            services.AddCors(options =>
+
+            {
+
+                options.AddPolicy(MyAllowSpecificOrigins,
+
+                builder =>
+
+                {
+
+                    builder.WithOrigins("http://localhost:8080", "http://example.com");
+
+                });
+
+            });
+/----------------------------------------------------------------------------------------------/
+
+public void Configure(IApplicationBuilder app, IHostingEnvironment env) 
+
+      {
+
+            app.UseCors(MyAllowSpecificOrigins);
+
+ 
+            app.UseHttpsRedirection();
+/----------------------------------------------------------------------------------------------/
+INSTALAR:
+
+Instalación de Vue CLI:
+
+npm install -g @vue/cli
+
+Verificar la instlación:
+
+vue --version
+
+Crear un proyecto:
+
+vue create vueuniversity
+
+Abrir la carpeta en Visual Studio Code y ejecutar el servidor:
+
+npm run serve
+
+Instalar el Material:
+
+npm install vue-material --save
+
+Instalar el AXIOS:
+
+npm install axios --save
+
+

@@ -1,0 +1,39 @@
+WEB 
+------------------------------------------------------------------------
+Crear el MVC dotnet new mvc -o 'NOMBRE'
+si lo llevo ya esta instalado los paquetes y el netcore 2.2 en la u 
+------------------------------------------------------------------------
+Crear los entity son clases en C# 
+El dbContext y sus appsetting.json
+
+AMUCHOS: Icollection<> ga get set
+A1: tpo CLASE clase get set
+
+MIGRACION
+
+en vez de packageReference ->>> DotNetCliToolReference
+dotnet ef migrations add CreateSchema
+dotnet ef database update
+
+dotnet ef database update 
+
+LUEGO: debe salir la carpeta migrations en el vsCode 
+
+INTERFAZ
+
+aspcoreGenerator GAAA
+
+aspnet-codegenerator controller -name PacienteController -m Paciente -dc ConsultorioDbContext
+--relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
+
+genera todo top
+
+alterar el layout.cshtml con indexes 
+
+
+IDENTITY
+
+dotnet aspnet-codegenerator identity --files "Account.register;Account.Login; Account.Logout; Account.Manage.Index"--userClass Usuario --force
+
+luego de <ul>
+<partial name = "_LoginPartial"/>

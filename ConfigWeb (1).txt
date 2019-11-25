@@ -1,0 +1,153 @@
+Solución al problema de dotnet-aspnet-codegenerator
+------------------------------------------------------------------
+Instalación de los Package del EntityFrameworkCore en el Proyecto
+
+En el Terminal ejecute los siguientes comandos:
+
+dotnet add package Microsoft.EntityFrameworkCore.SqlServer
+dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+dotnet add package Microsoft.EntityFrameworkCore.Tools
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+
+Instalación del ASP.NET Core scaffolder 
+
+En el Terminal ejecute los siguientes comandos:
+
+dotnet tool install -g dotnet-aspnet-codegenerator
+
+
+Instalación de los Package del CodeGeneration  en el Proyecto
+
+En el Terminal ejecute los siguientes comandos:
+
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Tools
+
+
+Modificar el archivo Identidad.csproj:
+
+Antes:     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+
+Ahora:    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.4" />
+
+
+
+Agregar el siguiente codigo al archivo: appsettings.json
+
+"ConnectionStrings": {   
+
+   "DefaultConnection": "DataSource=University.db",   
+
+   "UniversityConnection": "Server=(localdb)\\mssqllocaldb;Database=UniversityDB2;Trusted_Connection=True;MultipleActiveResultSets=true" 
+
+},
+
+
+
+Modificar el archivo: Startup.cs
+
+services.AddDbContext<SchoolContext>(options =>
+
+   options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+Restaurar el Project
+
+En el Terminal ejecute los siguientes comandos:
+
+dotnet restore
+
+dotnet aspnet-codegenerator identity --help
+
+
+
+Agregar el util del codegenerator
+dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Utils --version 2.2.3
+
+
+Generar el Identity
+--------------------------------------------------------------
+dotnet aspnet-codegenerator identity --files "Account.Register;Account.Login;Account.Logout;Account.Manage.Index" --userClass Usuario --force
+
+
+
+Cambiar el archivo IdentityHostingStartup.cs
+---------------------------------------------------------------x
+services.AddDbContext<UniversityIdentityDbContext>(options =>
+
+     options.UseSqlite(context.Configuration.GetConnectionString("DefaultConnection")));
+
+
+
+Agregar el login partial al archivo Views/Shared/_Layout.cshtml:
+
+        <li class="nav-item">
+
+            <a class="nav-link text-dark" asp-area="" asp-controller="Enrollments" asp-action="Index">Enrollments</a>
+
+        </li>                     
+
+   </ul>
+
+   <partial name="_LoginPartial" />
+
+
+
+Agregar UseAuthentication en el archivo Startup.cs:
+
+   app.UseStaticFiles();
+
+   app.UseAuthentication();
+
+   app.UseCookiePolicy();
+
+
+
+Crear la migración y actualizar la base de datos
+
+dotnet ef migrations add CreateIdentitySchema --context UniversityIdentityDbContext
+
+dotnet ef database update --context UniversityIdentityDbContext
+
+
+
+En el Shell: Ejecutar el proyecto
+
+dotnet run
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Elemento
+Generación de Vista y COntroller
+Las siguientes opciones se utilizan para generar un Controlador:
+
+--controllerName o -name Nombre del controlador
+--model o -m     Clase de modelo a utilizar
+--dataContext o -dc     La clase DbContext a utilizar
+--relativeFolderPath     Ruta de acceso relativa a la carpeta de salida del proyecto donde se genera el archivo.
+--referenceScriptLibraries     Bibliotecas de scripts de referencia en las vistas generadas.
+--useDefaultLayout      Usa el diseño predeterminado de las vistas.
+Para generar el Controlador StudentController, ejecute el siguiente comando en el Shell:
+
+dotnet aspnet-codegenerator controller -name TeachersController -m Teacher -dc SchoolContext --relativeFolderPath Controllers --useDefaultLayout --referenceScriptLibraries
+
+
+Crear la migración y actualizar la base de datos
+
+dotnet ef migrations add CreateTeacher --context SchoolContext
+
+dotnet ef database update --conte
